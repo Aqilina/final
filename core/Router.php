@@ -51,6 +51,11 @@ class Router
             die();
         endif;
 
+
+        if (is_string($callback)) :
+            return $this->renderView($callback);
+        endif;
+
 //        var_dump('PATH:');
 //        var_dump($path);
 //        var_dump('METHOD:');
@@ -62,4 +67,14 @@ class Router
 
         return call_user_func($callback); //
     }
+
+    public function renderView(string $view, array $params = [])
+    {
+        include_once __DIR__ . "/../view/$view.php";
+
+        //universalus budas kaip nurodyti kelia iki direktorijos (kaip anksciau config faile APPROOT)
+//        $layout = $this->layoutContent(); //includina main php
+//        $page = $this->pageContent($view, $params);
+    }
+
 }
