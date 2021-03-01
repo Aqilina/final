@@ -70,11 +70,15 @@ class Router
 
     public function renderView(string $view, array $params = [])
     {
-        include_once __DIR__ . "/../view/$view.php";
-
-        //universalus budas kaip nurodyti kelia iki direktorijos (kaip anksciau config faile APPROOT)
-//        $layout = $this->layoutContent(); //includina main php
-//        $page = $this->pageContent($view, $params);
+        $this->layoutContent();
+        include_once Application::$ROOT_DIR . "/view/$view.php";
     }
+
+    protected function layoutContent()
+    {
+        include_once Application::$ROOT_DIR . "/view/layout/main.php";
+
+    }
+
 
 }
