@@ -11,17 +11,18 @@ namespace app\core;
  */
 class Router
 {
-    public function __construct()
-    {
-        print "Router is working";
-    }
-
     /**
      *  This will hold all routes.
      * @var array
      */
     protected array $routes = [];
+    public Request $request;
 
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+        print "Router is working";
+    }
 
 
     //GET kelio atvaizdavimas
