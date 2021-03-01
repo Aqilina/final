@@ -3,6 +3,7 @@
 require_once '../vendor/autoload.php';
 
 use app\core\Application;
+use app\core\AuthController;
 
 $app = new Application(dirname(__DIR__));
 
@@ -10,7 +11,6 @@ $app = new Application(dirname(__DIR__));
 $app->router->get('/', 'index');
 $app->router->get('/index', 'index');
 
+$app->router->get('/login', [AuthController::class, 'login']);
 
-//Application.php paziures, kokie yra routai ir juo paleis su
-// Application.php run() - bus galima nueit tais adresais
 $app->run();
