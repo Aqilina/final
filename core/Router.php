@@ -17,11 +17,12 @@ class Router
      */
     protected array $routes = [];
     public Request $request;
+    public Response $response;
 
-
-    public function __construct(Request $request)
+    public function __construct(Request $request, Response $response)
     {
         $this->request = $request;
+        $this->response = $response;
     }
 
     //GET kelio atvaizdavimas
@@ -29,7 +30,7 @@ class Router
     /**
      * Adds get route and callback fn to routes array
      * @param string $path
-     * @param $callback
+     * @param string | array | object $callback
      */
     public function get($path, $callback)
     {
@@ -47,8 +48,8 @@ class Router
         $callback = $this->routes[$method][$path] ?? false; // jei bandys ivykdyti kelia, kurio nera
 
         if ($callback === false) :
-            echo "page doesnt exist";
-            die();
+            $this->response->setResponseCode(404);
+            return $this->renderView('_404');
         endif;
 
 
@@ -56,16 +57,7 @@ class Router
             return $this->renderView($callback);
         endif;
 
-//        var_dump('PATH:');
-//        var_dump($path);
-//        var_dump('METHOD:');
-//        var_dump($method);
-//        var_dump('CALLBACK:');
-//        var_dump($callback);
-//        var_dump('ROUTES[]:');
-//        var_dump($this->routes);
-
-        return call_user_func($callback); //
+        return call_user_func($callback);
     }
 
     public function renderView(string $view, array $params = [])
