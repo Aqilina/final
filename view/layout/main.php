@@ -15,8 +15,10 @@
 </head>
 <body class="mx-auto">
 
-<nav class="navbar  navbar-light bg-light">
-    <div class="container-fluid">
+<div class="container">
+
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
 
             <div class="d-flex ps-5">
                 <a class="nav-link" href="/">Home</a>
@@ -28,12 +30,15 @@
                 <a class="nav-link" href="/register">Register</a>
             </div>
 
-    </div>
-</nav>
+        </div>
+    </nav>
 
-<div class="container">
 
     {{content}}
+
+    <footer style="width=800px">
+        &copy 2021. Akvilina Lapenaite, all rights reserved
+    </footer>
 
 </div>
 
