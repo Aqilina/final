@@ -4,7 +4,8 @@ require_once '../vendor/autoload.php';
 
 use app\core\Application;
 
-$app = new Application();
+$app = new Application(dirname(__DIR__));
+
 
 $app->router->get('/', 'index');
 $app->router->get('/index', 'index');
