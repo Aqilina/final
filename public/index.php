@@ -6,7 +6,20 @@ use app\core\Application;
 use app\core\AuthController;
 use app\controller\SiteController;
 
-$app = new Application(dirname(__DIR__));
+
+//COMPOSER.JSON inicijuota. kad uzkrauti kintamuosius
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->load();
+
+$config = [
+    'db' => [
+        'dsn' => $_ENV['DB_DSN'],
+        'user' => $_ENV['DB_USER'],
+        'password' => $_ENV['DB_PASSWORD'],
+    ]
+];
+
+$app = new Application(dirname(__DIR__), $config);
 
 
 $app->router->get('/', [SiteController::class, 'index']);
