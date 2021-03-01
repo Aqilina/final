@@ -38,6 +38,11 @@ class Router
         $this->routes['get'][$path] = $callback;
     }
 
+    public function post($path, $callback)
+    {
+        $this->routes['post'][$path] = $callback;
+    }
+
     public function resolve()
     {
         //GAUNAMAS KELIAS PO "LOCALHOST"
@@ -68,7 +73,14 @@ class Router
             return $this->renderView($callback);
         endif;
 
-        return call_user_func($callback);
+        if (is_array($callback)) :
+            //$callback yra array - jis ateina is index.php - ten paduodamas masyvas
+            $instance = new $callback[0];
+            Application::$app->controller = $instance;
+            $callback[0] = Application::$app->controller;
+        endif;
+
+        return call_user_func($callback, $this->request);
     }
 
     public function renderView(string $view, array $params = [])
