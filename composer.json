@@ -1,0 +1,17 @@
+{
+    "name": "final/gym",
+    "authors": [
+        {
+            "name": "akvilina",
+            "email": "akvilina.lapenaite@gmail.com"
+        }
+    ],
+
+    "autoload": {
+        "psr-4": {
+            "app\\":"./"
+        }
+    },
+
+    "require": {}
+}
