@@ -16,11 +16,13 @@ class Application
      * We will need it routing in all our application - we will have it as a property
      * @var Router
      */
+    public static string $ROOT_DIR;
     public Router $router;
     public Request $request;
 
-    public function __construct()
+    public function __construct($rootPath)
     {
+        self::$ROOT_DIR = $rootPath;
         $this->request = new Request();
         $this->router = new Router($this->request);
     }
