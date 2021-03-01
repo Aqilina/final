@@ -5,17 +5,19 @@ namespace app\core;
 
 
 use app\core\Controller;
-
+use app\model\AuthModel;
 
 
 class AuthController extends Controller
 
 {
     public Validation $vld;
+    protected AuthModel $authModel;
 
     public function __construct()
     {
         $this->vld = new Validation;
+        $this->authModel = new AuthModel();
     }
 
 
@@ -49,7 +51,7 @@ class AuthController extends Controller
             $data = $request->getBody();
 
             $data['errors']['nameErr'] = $this->vld->validateName($data['name']);
-            $data['errors']['nameErr'] = $this->vld->validateLastname($data['lastname']);
+            $data['errors']['lastnameErr'] = $this->vld->validateLastname($data['lastname']);
             $data['errors']['emailErr'] = $this->vld->validateEmail($data['email']);
 //            $data['errors']['emailErr'] = $this->vld->validateEmail($data['email']);
             $data['errors']['passwordErr'] = $this->vld->validatePassword($data['password'], 6, 10);
@@ -61,7 +63,8 @@ class AuthController extends Controller
                 //uzhashinti slaptazodi
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
-                if ($this->userModel->register($data)) {
+                if ($this->authModel->registerToDb($data)) {
+                    print "NUEJO I DB";
 //                    $request->redirect('/login');
                 } else {
                     die('Something went wrong in adding user to db');

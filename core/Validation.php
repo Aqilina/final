@@ -50,10 +50,9 @@ class Validation
 
     public function validateLastname($field)
     {
-        // Validate Name
         if (empty($field)) return "Please enter your Lastname";
-        if (!preg_match("/^[a-z ,.'-]+$/i", $field)) return "Name must only contain latin characters";
-        return ''; //falsy
+        if (!preg_match("/^[a-z ,.'-]+$/i", $field)) return "Lastname must only contain latin characters";
+        return '';
     }
 
 
