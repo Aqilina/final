@@ -36,4 +36,10 @@ class Router
         //sukuria routuose toki elementa
         $this->routes['get'][$path] = $callback;
     }
+
+    public function resolve()
+    {
+        var_dump($this->routes);
+        exit;
+    }
 }

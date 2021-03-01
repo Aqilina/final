@@ -22,4 +22,12 @@ class Application
     {
         $this->router = new Router();
     }
+
+
+    //iskviecia routerio metoda,
+    //kai run'inama applikacija,
+    public function run()
+    {
+        $this->router->resolve();
+    }
 }
