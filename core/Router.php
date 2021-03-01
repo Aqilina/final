@@ -89,6 +89,10 @@ class Router
     }
 
     protected function pageContent($view, $params) {
+        foreach ($params as $key => $param) :
+            $$key = $param;
+        endforeach;
+
         ob_start();
         include_once Application::$ROOT_DIR . "/view/$view.php";
         return ob_get_clean();
