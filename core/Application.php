@@ -30,6 +30,6 @@ class Application
     //kai run'inama applikacija,
     public function run()
     {
-        $this->router->resolve();
+        echo $this->router->resolve();
     }
 }

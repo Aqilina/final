@@ -22,10 +22,10 @@ class Router
     public function __construct(Request $request)
     {
         $this->request = $request;
-        print "Router is working";
     }
 
     //GET kelio atvaizdavimas
+
     /**
      * Adds get route and callback fn to routes array
      * @param string $path
@@ -46,9 +46,20 @@ class Router
 
         $callback = $this->routes[$method][$path] ?? false; // jei bandys ivykdyti kelia, kurio nera
 
+        if ($callback === false) :
+            echo "page doesnt exist";
+            die();
+        endif;
 
-        var_dump($path);
-        var_dump($method);
-        var_dump($callback);
+//        var_dump('PATH:');
+//        var_dump($path);
+//        var_dump('METHOD:');
+//        var_dump($method);
+//        var_dump('CALLBACK:');
+//        var_dump($callback);
+//        var_dump('ROUTES[]:');
+//        var_dump($this->routes);
+
+        return call_user_func($callback); //
     }
 }
