@@ -70,14 +70,27 @@ class Router
 
     public function renderView(string $view, array $params = [])
     {
-        $this->layoutContent();
-        include_once Application::$ROOT_DIR . "/view/$view.php";
+        //universalus budas kaip nurodyti kelia iki direktorijos (kaip anksciau config faile APPROOT)
+        $layout = $this->layoutContent();
+        $page =  $this->pageContent($view, $params);
+
+        //take layout and replace the {{content}} with the $page content
+        // 1. ka pakeisiu, 2. kuo pakeisiu, 3. kur pakeisiu
+        //RETURNAS NESUVEIKE
+        echo str_replace('{{content}}', $page, $layout);
     }
 
     protected function layoutContent()
     {
+        ob_start(); //paima i atminti stringo pavidalu
         include_once Application::$ROOT_DIR . "/view/layout/main.php";
+        return ob_get_clean(); // grazina i iskvietimo vieta viska stringo pavidalu
+    }
 
+    protected function pageContent($view, $params) {
+        ob_start();
+        include_once Application::$ROOT_DIR . "/view/$view.php";
+        return ob_get_clean();
     }
 
 
