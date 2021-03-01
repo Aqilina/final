@@ -34,7 +34,6 @@ class Router
      */
     public function get($path, $callback)
     {
-
         //sukuria routuose toki elementa
         $this->routes['get'][$path] = $callback;
     }
@@ -47,11 +46,23 @@ class Router
 
         $callback = $this->routes[$method][$path] ?? false; // jei bandys ivykdyti kelia, kurio nera
 
+
+
+//        var_dump('PATH:');
+//        var_dump($path);
+//        var_dump('METHOD:');
+//        var_dump($method);
+//
+//        var_dump('CALLBACK:');
+//        var_dump($callback);
+//        var_dump('ROUTES[]:');
+//        var_dump($this->routes);
+
+        //IF THERE ARE NO SUCH ROUTE ADDED
         if ($callback === false) :
             $this->response->setResponseCode(404);
             return $this->renderView('_404');
         endif;
-
 
         if (is_string($callback)) :
             return $this->renderView($callback);
@@ -66,16 +77,14 @@ class Router
         $layout = $this->layoutContent();
         $page =  $this->pageContent($view, $params);
 
-        //take layout and replace the {{content}} with the $page content
-        // 1. ka pakeisiu, 2. kuo pakeisiu, 3. kur pakeisiu
-        //RETURNAS NESUVEIKE
-        echo str_replace('{{content}}', $page, $layout);
+        return str_replace("{{content}}", $page, $layout);
     }
+
 
     protected function layoutContent()
     {
         ob_start(); //paima i atminti stringo pavidalu
-        include_once Application::$ROOT_DIR . "/view/layout/main.php";
+            include_once Application::$ROOT_DIR . "/view/layout/main.php";
         return ob_get_clean(); // grazina i iskvietimo vieta viska stringo pavidalu
     }
 

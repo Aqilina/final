@@ -1,0 +1,28 @@
+body {
+    width: 800px;
+}
+
+a .nav-link {
+    text-decoration: none !important;
+}
+
+header {
+    /*background-color: red;*/
+    height: 70px;
+    /*width: inherit;*/
+}
+
+.main-image {
+    width: inherit;
+    background-color:red;
+}
+
+
+
+.service {
+    background-color: yellow;
+}
+
+main {
+    width: inherit;
+}
