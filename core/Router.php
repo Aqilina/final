@@ -31,8 +31,8 @@ class Router
      * @param string $path
      * @param $callback
      */
-    public function get($path, $callback) {
-
+    public function get($path, $callback)
+    {
 
         //sukuria routuose toki elementa
         $this->routes['get'][$path] = $callback;
@@ -40,7 +40,9 @@ class Router
 
     public function resolve()
     {
-        var_dump($this->routes);
-        exit;
+        //GAUNAMAS KELIAS PO "LOCALHOST"
+        $path = $this->request->getPath();
+        $method = $this->request->method();
+        var_dump($method);
     }
 }

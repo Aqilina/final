@@ -28,4 +28,13 @@ class Request
 
         return $path;
     }
+
+    /**
+     * This will return http method get or post
+     * @return string
+     */
+    public function method(): string
+    {
+        return strtolower($_SERVER['REQUEST_METHOD']);
+    }
 }
