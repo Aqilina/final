@@ -73,3 +73,13 @@ footer {
     justify-content: center;
     align-items: center;
 }
+
+.feedback-container {
+    display: flex;
+    justify-content: center;
+}
+
+.comments-container {
+    width: 70%;
+}
+
