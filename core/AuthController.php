@@ -81,12 +81,85 @@ class AuthController extends Controller
 
 
 //    --------------------------------------------------------------------
-    public function login()
+    /**
+     * This enables user login. Handles get an post requests.
+     *
+     * @param Request $request
+     * @return string|string[]
+     */
+    public function login(Request $request)
     {
-        $data = [
-            'vardas' => 'Aqilina'
-        ];
-        return $this->render('login', $data);
+        // have ability to change laout
+        if ($request->isGet()) :
+            $data = [
+                'email' => '',
+                'password' => '',
+                'errors' => [
+                    'emailErr' => '',
+                    'passwordErr' => '',
+                ]
+            ];
+            return $this->render('login', $data);
+        endif;
+
+        if ($request->isPost()) :
+
+            // we get all post values sanitized
+            $data = $request->getBody();
+
+            // validation
+            $data['errors']['emailErr'] = $this->vld->validateLoginEmail($data['email'], $this->authModel);
+            $data['errors']['passwordErr'] = $this->vld->validateEmpty($data['password'], 'Please enter your password');
+
+            // if there are no errors
+            if ($this->vld->ifEmptyArr($data['errors'])) {
+                // no errors
+                // email was found and password was entered
+                $loggedInUser = $this->authModel->loginToDb($data['email'], $data['password']);
+
+
+                if ($loggedInUser) {
+
+                    $this->createUserSession($loggedInUser);
+                    $request->redirect('/index');
+                } else {
+                    $data['errors']['passwordErr'] = 'Wrong password or email';
+                    // load view with errors
+                    return $this->render('login', $data);
+                }
+            }
+
+            return $this->render('login', $data);
+        endif;
+    }
+
+    /**
+     *  if we have user we save its data in session
+     * @param $userRow
+     */
+    public function createUserSession($userRow)
+    {
+        $_SESSION['user_id'] = $userRow->id;
+        $_SESSION['user_email'] = $userRow->email;
+        $_SESSION['user_name'] = $userRow->name;
+
+    }
+
+    /**
+     * Unset Session values and destroy session + redirect to /
+     *
+     * @param Request $request
+     */
+    public function logout(Request $request)
+    {
+        unset($_SESSION['user_id']);
+        unset($_SESSION['user_email']);
+        unset($_SESSION['user_name']);
+
+        session_destroy();
+
+        $request->redirect('/');
+
     }
 
 
