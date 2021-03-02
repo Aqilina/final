@@ -25,6 +25,7 @@ class Application
     public static Application $app;
     public Controller $controller;
     public Database $db;
+    public Session $session;
 
 
     //sukuria nauja routeri
@@ -38,6 +39,8 @@ class Application
         self::$app = $this;
 
         $this->db = new Database($config['db']);
+        $this->session = new Session();
+
 
     }
 
