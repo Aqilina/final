@@ -7,6 +7,8 @@ namespace app\core;
 
 // this is a class to validate different inputs and data
 
+use app\model\AuthModel;
+
 class Validation
 {
     private $password;
@@ -66,6 +68,27 @@ class Validation
             // if email already exists
             if ($userModel->findUserByEmail($field)) return 'Email already taken';
         }
+        return '';
+    }
+
+    /**
+     * Validate rules and test for Email in login
+     *
+     * @param string $field
+     * @param AuthModel $authModel
+     * @return string
+     */
+    public function validateLoginEmail($field, &$authModel)
+    {
+        // validate empty
+        if (empty($field)) return "Please enter Your Email";
+
+        // check email format
+        if (filter_var($field, FILTER_VALIDATE_EMAIL) === false) return "Please check your email";
+
+        // if email already exists
+        if (!$authModel->findUserByEmail($field)) return 'Email not found';
+
         return '';
     }
 
