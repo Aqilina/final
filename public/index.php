@@ -34,8 +34,8 @@ $app->router->post('/register', [AuthController::class, 'register']);
 
 $app->router->get('/logout', [AuthController::class, 'logout']);
 
-$app->router->get('/feedback', 'feedback');
-$app->router->post('/feedback', 'feedback');
+$app->router->get('/feedback', [CommentsController::class, 'feedback']);
+$app->router->post('/feedback', [CommentsController::class, 'feedback']);
 
 $app->router->get('/commentsGetFromDb', [Api::class, 'commentsGetFromDb']);
 

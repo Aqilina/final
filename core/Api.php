@@ -8,6 +8,7 @@ use app\model\CommentModel;
 
 class Api extends Controller
 {
+
     /**
      * @var CommentModel
      */
@@ -18,22 +19,33 @@ class Api extends Controller
         $this->commentModel = new CommentModel();
     }
 
-    public function commentsGetFromDb()
+    public function commentsGetFromDb(Request $request)
     {
 
-        $comments = $this->commentModel->getComments();
-        $data = [
-            'comments' => $comments,
-        ];
+        if ($request->isGet()) :
+            $data = [
+                'comments' => $this->commentModel->getComments(),
+                'name' => '',
+                'comment' => '',
+                'errors' => [
+                    'nameErr' => '',
+                    'commentErr' => '',
+                ],
+            ];
 
         header('Content-Type: application/json');
         echo json_encode($data);
+
+        endif;
     }
 
 
     public function addComment(Request $request)
     {
         $vld = new Validation();
+
+        if ($request->isPost()) :
+
         $data = [
             'comments' => $this->commentModel->getComments(),
             'name' => $request->getBody()['name'],
@@ -43,7 +55,6 @@ class Api extends Controller
         $data['errors']['nameErr'] = $vld->validateName($data['name']);
         $data['errors']['commentErr'] = $vld->validateComment($data['comment']);
 
-
         //if there are no errors:
         if ($vld->ifEmptyArr($data['errors'])) :
 
@@ -51,15 +62,14 @@ class Api extends Controller
 //            //PRIDETI KOMENTARA
             $this->commentModel->insertComment($data);
             $result['success'] = "Comment added";
-            $data = [
-                'comments' => $this->commentModel->getComments()
-            ];
         else:
             $result['errors'] = $data['errors'];
         endif;
 
         header('Content-Type: application/json');
         echo json_encode($result);
+
+        endif;
     }
 
 }

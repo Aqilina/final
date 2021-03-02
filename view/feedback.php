@@ -1,4 +1,4 @@
-<?php //var_dump($comments) ?>
+<?php var_dump($comments[0]->name) ?>
 
 <header class="text-center m-4">
 
@@ -11,14 +11,24 @@
     <div class="comments-container my-4">
         <div class="text-start mb-2">What our clients say about us:</div>
 
-        <!--      COMMENTS AREA-->
-        <div id="comments" class="comment-container"></div>
-        <!------------------------------------------------------------------------------->
-
         <?php if (!\app\core\Session::isUserLoggedIn()) : ?>
-
+            <?php foreach ($comments as $comment) : ?>
+            <div class="comments card card-body mb-4">
+                <div class="oneComment text-start">
+                    <p class=""><?php echo $comment->name ?></p>
+                    <p class="text-muted"><?php echo $comment->comment ?></p>
+                    <p class="text-muted"><?php echo $comment->created_at ?></p>
+                </div>
+            </div>
+        <?php endforeach; ?>
             <div>If you would like to share your opinion - please <a href="/login">login</a></div>
         <?php else: ?>
+
+            <!------------------------------------------------------------------------------->
+
+            <!--      COMMENTS AREA-->
+            <div id="comments" class="comment-container"></div>
+
             <div class="text-start">Write comment:</div>
             <form action="" method="post" id="commentForm">
 

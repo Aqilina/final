@@ -6,19 +6,19 @@ namespace app\controller;
 use app\core\Controller;
 use app\core\Request;
 use app\model\CommentModel;
-use app\core\Validation;
+//use app\core\Validation;
 
 
 class CommentsController extends Controller
 
 {
     protected CommentModel $commentModel;
-    public Validation $vld;
+//    public Validation $vld;
 
     public function __construct()
     {
         $this->commentModel = new CommentModel();
-        $this->vld = new Validation();
+//        $this->vld = new Validation();
     }
 
     public function index()
@@ -27,8 +27,9 @@ class CommentsController extends Controller
     }
 
 
-    public function feedback()
+    public function feedback(Request $request)
     {
+
         if ($request->isGet()) :
             $data = [
                 'comments' => $this->commentModel->getComments(),
@@ -39,44 +40,11 @@ class CommentsController extends Controller
                     'commentErr' => '',
                 ],
             ];
-
 //        var_dump($data);
             return $this->render('feedback', $data);
         endif;
 
-//-----------------------------------------------------------------------------------------------
-        if ($request->isPost()) :
-
-            $data = [
-                'comments' => $this->commentModel->getComments(),
-                'name' => $request->getBody()['name'],
-                'comment' => $request->getBody()['comment'],
-            ];
-
-            $data['errors']['nameErr'] = $this->vld->validateName($data['name']);
-            $data['errors']['commentErr'] = $this->vld->validateComment($data['comment']);
-
-
-            //if there are no errors:
-            if ($this->vld->ifEmptyArr($data['errors'])) :
-
-
-                //PRIDETI KOMENTARA
-            $this->commentModel->insertComment($data);
-                $result['success'] = "Comment added";
-                $data = [
-                    'comments' => $this->commentModel->getComments()
-                ];
-
-                header('Content-Type: application/json');
-                echo json_encode($result);
-            endif;
-
-            return $this->render('feedback', $data);
-
-        endif;
     }
-
 }
 
 
