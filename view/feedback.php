@@ -11,16 +11,16 @@
     <div class="comments-container my-4">
         <div class="text-start mb-2">What our clients say about us:</div>
 
-<!--      COMMENTS AREA-->
- <div id="comments" class="comment-container"></div>
-<!------------------------------------------------------------------------------->
+        <!--      COMMENTS AREA-->
+        <div id="comments" class="comment-container"></div>
+        <!------------------------------------------------------------------------------->
 
         <?php if (!\app\core\Session::isUserLoggedIn()) : ?>
 
             <div>If you would like to share your opinion - please <a href="/login">login</a></div>
         <?php else: ?>
             <div class="text-start">Write comment:</div>
-            <form action="" method="post">
+            <form action="" method="post" id="commentForm">
 
                 <div class="form-group">
                     <input id="name" type="text" name="name"
@@ -37,12 +37,21 @@
                               placeholder="Write your comment"></textarea>
                     <span class='invalid-feedback'><?php echo $errors['commentErr'] ?></span>
                 </div>
-                <button type="submit" class="btn btn-success" id="submitBtn">Comment</button>
+                <button disabled type="submit" class="btn btn-success" id="submitBtn">Comment</button>
             </form>
 
 
             <script>
-                const commentsOutputEl = document.getElementById('comments')
+                const commentsContainer = document.getElementById('comments')
+                const commentForm = document.getElementById('commentForm')
+                const name = document.getElementById('name')
+                const comment = document.getElementById('comment')
+
+                const submitBtn = document.getElementById('submitBtn')
+
+                commentForm.addEventListener('submit', addCommentAsync)
+                name.addEventListener('input', clearErrorsOnInput);
+                comment.addEventListener('input', clearErrorsOnInput);
 
 
                 fetchComments()
@@ -52,8 +61,8 @@
                         .then(response => {
                             return response.json();
                         }).then(data => {
-                            console.log(data);
-                            generateHTMLComments(data.comments)
+                        console.log(data.comments);
+                        generateHTMLComments(data.comments)
                     });
                 }
 
@@ -69,12 +78,69 @@
 `
                 }
 
-
                 function generateHTMLComments(commentsArr) {
-                    commentsOutputEl.innerHTML = ''
+                    commentsContainer.innerHTML = ''
                     commentsArr.forEach(function (commentObj) {
-                        commentsOutputEl.innerHTML += generateOneComment(commentObj)
+                        commentsContainer.innerHTML += generateOneComment(commentObj)
                     })
+                }
+
+                // --------------------------------------------------------------------------------------------------------------------
+
+                function addCommentAsync(event) {
+                    event.preventDefault();
+                    resetErrors()
+
+                    const addCommentFormData = new FormData(commentForm)
+
+                    fetch('/addComment', {
+                        method: 'post',
+                        body: addCommentFormData
+                    }).then(response => {
+                        return response.json();
+                    }).then(data => {
+                        // console.log(data);
+                        if (data.success) {
+                            handleSuccessComment();
+                        } else {
+                            handleCommentError(data.errors)
+                        }
+                    }).catch(error => console.error(error))
+                }
+
+                function handleSuccessComment() {
+                    comment.value = '';
+                    fetchComments();
+                }
+
+                function handleCommentError(errorObj) {
+                    console.log(errorObj)
+                    submitBtn.setAttribute('disabled', '')
+
+                    if (errorObj.commentErr) {
+                        comment.classList.add('is-invalid');
+                        comment.nextElementSibling.innerHTML = errorObj.commentErr;
+                    } else if (errorObj.nameErr) {
+                        comment.classList.add('is-invalid');
+                        comment.nextElementSibling.innerHTML = errorObj.nameErr;
+                    }
+                }
+
+                function resetErrors() {
+                    // search form for al is-inavlid clases and remove them
+                    const errorEl = commentForm.querySelectorAll('.is-invalid');
+                    errorEl.forEach((errorInputEl) => errorInputEl.classList.remove('is-invalid'));
+                }
+
+                function clearErrorsOnInput(event) {
+                    const stringLength = event.target.value.length;
+
+                    if (stringLength > 1) {
+                        event.target.classList.remove('is-invalid');
+                        submitBtn.removeAttribute('disabled');
+                    } else {
+                        submitBtn.setAttribute('disabled', '');
+                    }
                 }
 
             </script>
