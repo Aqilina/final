@@ -34,12 +34,13 @@ $app->router->post('/register', [AuthController::class, 'register']);
 
 $app->router->get('/logout', [AuthController::class, 'logout']);
 
+//not registered
 $app->router->get('/feedback', [CommentsController::class, 'feedback']);
-$app->router->post('/feedback', [CommentsController::class, 'feedback']);
 
+//registered
 $app->router->get('/commentsGetFromDb', [Api::class, 'commentsGetFromDb']);
 
-//$app->router->get('/addComment', [Api::class, 'addComment']);
+//registered - post
 $app->router->post('/addComment', [Api::class, 'addComment']);
 
 $app->run();
