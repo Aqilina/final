@@ -51,18 +51,6 @@ class Router
 
         $callback = $this->routes[$method][$path] ?? false; // jei bandys ivykdyti kelia, kurio nera
 
-
-
-//        var_dump('PATH:');
-//        var_dump($path);
-//        var_dump('METHOD:');
-//        var_dump($method);
-//
-//        var_dump('CALLBACK:');
-//        var_dump($callback);
-//        var_dump('ROUTES[]:');
-//        var_dump($this->routes);
-
         //IF THERE ARE NO SUCH ROUTE ADDED
         if ($callback === false) :
             $this->response->setResponseCode(404);
@@ -95,8 +83,13 @@ class Router
 
     protected function layoutContent()
     {
+        if (isset(Application::$app->controller)) :
+            $layout = Application::$app->controller->layout;
+        else :
+            $layout = 'pageNotFound';
+        endif;
         ob_start(); //paima i atminti stringo pavidalu
-            include_once Application::$ROOT_DIR . "/view/layout/main.php";
+            include_once Application::$ROOT_DIR . "/view/layout/$layout.php";
         return ob_get_clean(); // grazina i iskvietimo vieta viska stringo pavidalu
     }
 
