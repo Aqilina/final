@@ -1,7 +1,7 @@
-<header class="text-center">
+<header class="text-center m-4">
 
     <h2>CORPORE SANO</h2>
-    <h5>Gym for healthy bodies</h5>
+    <h5>Gym for your health</h5>
 </header>
 <div class="main-image"></div>
 
