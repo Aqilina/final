@@ -117,4 +117,10 @@ class Validation
         if ($repeatField !== $this->password) return "Password must match";
         return '';
     }
+
+    public function validateComment($field)
+    {
+        if (empty($field)) return "Please enter Your Comment";
+        if (strlen($field) > 500) return "Your comment cannot exceed 500 characters";
+    }
 }

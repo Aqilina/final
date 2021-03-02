@@ -4,7 +4,8 @@ require_once '../vendor/autoload.php';
 
 use app\core\Application;
 use app\core\AuthController;
-use app\controller\SiteController;
+use app\controller\CommentsController;
+use app\core\Api;
 
 
 //COMPOSER.JSON inicijuota. kad uzkrauti kintamuosius
@@ -22,8 +23,8 @@ $config = [
 $app = new Application(dirname(__DIR__), $config);
 
 
-$app->router->get('/', [SiteController::class, 'index']);
-$app->router->get('/index', [SiteController::class, 'index']);
+$app->router->get('/', 'index');
+$app->router->get('/index', [CommentsController::class, 'index']);
 
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
@@ -33,6 +34,13 @@ $app->router->post('/register', [AuthController::class, 'register']);
 
 $app->router->get('/logout', [AuthController::class, 'logout']);
 
-$app->router->get('/feedback', [AuthController::class, 'feedback']);
+//not registered
+$app->router->get('/feedback', [CommentsController::class, 'feedback']);
+
+//registered
+$app->router->get('/commentsGetFromDb', [Api::class, 'commentsGetFromDb']);
+
+//registered - post
+$app->router->post('/addComment', [Api::class, 'addComment']);
 
 $app->run();

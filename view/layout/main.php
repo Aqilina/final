@@ -22,10 +22,7 @@
 
             <div class="d-flex ps-5">
                 <a class="nav-link" href="/">Home</a>
-
-                <?php if(\app\core\Session::isUserLoggedIn()) : ?>
                 <a class="nav-link" href="/feedback">About us</a>
-                <?php endif; ?>
             </div>
 
             <?php if(!\app\core\Session::isUserLoggedIn()) : ?>
