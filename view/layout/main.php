@@ -22,14 +22,22 @@
 
             <div class="d-flex ps-5">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/about">About us</a>
+
+                <?php if(\app\core\Session::isUserLoggedIn()) : ?>
+                <a class="nav-link" href="/feedback">About us</a>
+                <?php endif; ?>
             </div>
 
+            <?php if(!\app\core\Session::isUserLoggedIn()) : ?>
             <div class="d-flex pe-5">
                 <a class="nav-link" href="/login">Login</a>
                 <a class="nav-link" href="/register">Register</a>
             </div>
-
+            <?php else : ?>
+            <div class="d-flex pe-5">
+                <a class="nav-link" href="/logout">Logout</a>
+            </div>
+            <?php endif; ?>
         </div>
     </nav>
 

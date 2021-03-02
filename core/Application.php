@@ -23,10 +23,13 @@ class Application
 
     public Response $response;
     public static Application $app;
+    public Controller $controller;
+    public Database $db;
+    public Session $session;
 
 
     //sukuria nauja routeri
-    public function __construct($rootPath)
+    public function __construct($rootPath, $config)
     {
 
         self::$ROOT_DIR = $rootPath;
@@ -34,6 +37,10 @@ class Application
         $this->response = new Response();
         $this->router = new Router($this->request, $this->response);
         self::$app = $this;
+
+        $this->db = new Database($config['db']);
+        $this->session = new Session();
+
 
     }
 
@@ -43,4 +50,15 @@ class Application
     {
         echo $this->router->resolve();
     }
+
+    public function getController(): Controller
+    {
+        return $this->controller;
+    }
+
+    public function setController(Controller $controller): void
+    {
+        $this->controller = $controller;
+    }
+
 }

@@ -35,4 +35,54 @@ class Request
     {
         return strtolower($_SERVER['REQUEST_METHOD']);
     }
+
+
+//------------------------------------------------------------------
+    public function isGet(): bool
+    {
+        return $this->method() === 'get';
+    }
+
+    /**
+     * helper fn returns true if server method is post
+     * @return bool
+     */
+    public function isPost(): bool
+    {
+        return $this->method() === 'post';
+    }
+//---------------------------------------------------------------------
+
+//ISVALOMAS BODY POST METU
+    public function getBody()
+    {
+        //store clean values
+        $body = [];
+
+        //what type of request
+        if ($this->isPost()) :
+            foreach ($_POST as $key => $value) :
+                $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_FULL_SPECIAL_CHARS); //isvalom paduota reiksme
+            endforeach;
+        endif;
+
+        if ($this->isGet()) :
+            foreach ($_POST as $key => $value) :
+                $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_FULL_SPECIAL_CHARS); //isvalom paduota reiksme
+            endforeach;
+        endif;
+
+        return $body;
+    }
+
+
+    /**
+     * Simple way to redirect to a location
+     *
+     * @param $whereTo string
+     */
+    public function redirect($whereTo)
+    {
+        header("Location: $whereTo");
+    }
 }
