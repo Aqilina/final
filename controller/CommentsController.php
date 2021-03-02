@@ -27,7 +27,7 @@ class CommentsController extends Controller
     }
 
 
-    public function feedback(Request $request)
+    public function feedback()
     {
         if ($request->isGet()) :
             $data = [
@@ -60,12 +60,16 @@ class CommentsController extends Controller
             //if there are no errors:
             if ($this->vld->ifEmptyArr($data['errors'])) :
 
-                //PRIDETI KOMENTARA
-//            $this->commentModel->insertComment($data);
 
+                //PRIDETI KOMENTARA
+            $this->commentModel->insertComment($data);
+                $result['success'] = "Comment added";
                 $data = [
                     'comments' => $this->commentModel->getComments()
                 ];
+
+                header('Content-Type: application/json');
+                echo json_encode($result);
             endif;
 
             return $this->render('feedback', $data);
