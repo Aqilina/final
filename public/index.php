@@ -23,7 +23,7 @@ $config = [
 $app = new Application(dirname(__DIR__), $config);
 
 
-$app->router->get('/', 'index');
+$app->router->get('/', [CommentsController::class, 'index']);
 $app->router->get('/index', [CommentsController::class, 'index']);
 
 $app->router->get('/login', [AuthController::class, 'login']);
