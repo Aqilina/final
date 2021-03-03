@@ -17,7 +17,6 @@ class Controller
 
     /**
      * We set layout of our choice from /view/layout/.
-     *
      * @param string $layout
      */
     public function setLayout(string $layout)
@@ -26,9 +25,7 @@ class Controller
     }
 
     /**
-     *
      * We render the base view with params
-     *
      * @param string $view
      * @param array $params
      * @return string|string[]

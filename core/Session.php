@@ -4,8 +4,15 @@
 namespace app\core;
 
 
+/**
+ * Class Session
+ * @package app\core
+ */
 class Session
 {
+    /**
+     * Session constructor.
+     */
     public function __construct()
     {
         session_start();

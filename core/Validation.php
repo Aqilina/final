@@ -5,17 +5,26 @@ namespace app\core;
 
 
 
-// this is a class to validate different inputs and data
-
 use app\model\AuthModel;
 
+/**
+ * Class Validation
+ * this is a class to validate different inputs and data
+ * @package app\core
+ */
 class Validation
 {
+    /**
+     * @var
+     */
     private $password;
 
+    /**
+     * @param $arr
+     * @return bool
+     */
     public function ifEmptyArr($arr)
     {
-        // check if all values of array is empty
         foreach ($arr as $errorValue) {
             if (!empty($errorValue)) {
                 return false;
@@ -44,12 +53,15 @@ class Validation
      */
     public function validateName($field)
     {
-        // Validate Name
         if (empty($field)) return "Please enter your Name";
         if (!preg_match("/^[a-z ,.'-]+$/i", $field)) return "Name must only contain latin characters";
         return '';
     }
 
+    /**
+     * @param $field
+     * @return string
+     */
     public function validateLastname($field)
     {
         if (empty($field)) return "Please enter your Lastname";
@@ -58,15 +70,17 @@ class Validation
     }
 
 
+    /**
+     * @param $field
+     * @param null $userModel
+     * @return string
+     */
     public function validateEmail($field, &$userModel = null)
     {
-        // validate empty
         if (empty($field)) return "Please enter Your Email";
-        // check email format
         if (filter_var($field, FILTER_VALIDATE_EMAIL) === false) return "Please check your email";
         if ($userModel !== null) {
-            // if email already exists
-            if ($userModel->findUserByEmail($field)) return 'Email already taken';
+            if ($userModel->findUserByEmail($field)) return 'Email is already taken';
         }
         return '';
     }
@@ -80,44 +94,43 @@ class Validation
      */
     public function validateLoginEmail($field, &$authModel)
     {
-        // validate empty
         if (empty($field)) return "Please enter Your Email";
-
-        // check email format
         if (filter_var($field, FILTER_VALIDATE_EMAIL) === false) return "Please check your email";
-
-        // if email already exists
         if (!$authModel->findUserByEmail($field)) return 'Email not found';
-
         return '';
     }
 
+    /**
+     * @param $passField
+     * @param $min
+     * @param $max
+     * @return string
+     */
     public function validatePassword($passField, $min, $max)
     {
-        // validate empty
         if (empty($passField)) return "Please enter a password";
-
         $this->password = $passField;
-        // if pass length is les then min
         if (strlen($passField) < $min) return "Password must be more than $min characters length";
-        // if pass length is more then max
         if (strlen($passField) > $max) return "Password must be less than $max characters length";
-
-        // check password strength
-//        if (!preg_match("#[0-9]+#", $passField)) return "Password must contain at least one number";
-
         return '';
     }
 
+    /**
+     * @param $repeatField
+     * @return string
+     */
     public function confirmPassword($repeatField)
     {
-        // validate empty
         if (empty($repeatField)) return "Please repeat a password";
         if (!$this->password) return 'no password saved';
         if ($repeatField !== $this->password) return "Password must match";
         return '';
     }
 
+    /**
+     * @param $field
+     * @return string
+     */
     public function validateComment($field)
     {
         if (empty($field)) return "Please enter Your Comment";

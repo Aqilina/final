@@ -6,6 +6,10 @@ namespace app\core;
 
 use app\model\CommentModel;
 
+/**
+ * Class Api
+ * @package app\core
+ */
 class Api extends Controller
 {
 
@@ -14,11 +18,20 @@ class Api extends Controller
      */
     private CommentModel $commentModel;
 
+
+    /**
+     * Api constructor.
+     */
     public function __construct()
     {
         $this->commentModel = new CommentModel();
     }
 
+
+    /**
+     * This is where we get comments from db and show in feedback
+     * @param Request $request
+     */
     public function commentsGetFromDb(Request $request)
     {
 
@@ -40,6 +53,10 @@ class Api extends Controller
     }
 
 
+    /**
+     * This is where post method is executed
+     * @param Request $request
+     */
     public function addComment(Request $request)
     {
         $vld = new Validation();
@@ -59,7 +76,7 @@ class Api extends Controller
         if ($vld->ifEmptyArr($data['errors'])) :
 
 
-//            //PRIDETI KOMENTARA
+//            //add comment
             $this->commentModel->insertComment($data);
             $result['success'] = "Comment added";
         else:
