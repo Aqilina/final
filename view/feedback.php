@@ -10,8 +10,11 @@
 <div class="feedback-container">
     <div class="comments-container my-4">
         <div class="text-start mb-2">What our clients say about us:</div>
+<!------------------------------------------------------------------------>
 
+        <!--      COMMENTS AREA when NOT logged in-->
         <?php if (!\app\core\Session::isUserLoggedIn()) : ?>
+
             <?php foreach ($comments as $comment) : ?>
             <div class="comments card card-body mb-4">
                 <div class="oneComment text-start">
@@ -26,7 +29,7 @@
 
             <!------------------------------------------------------------------------------->
 
-            <!--      COMMENTS AREA-->
+            <!--      COMMENTS AREA when logged in-->
             <div id="comments" class="comment-container"></div>
 
             <div class="text-start">Write comment:</div>
