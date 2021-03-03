@@ -4,16 +4,29 @@
 namespace app\core;
 
 
-use app\core\Controller;
 use app\model\AuthModel;
 
 
+/**
+ * Responsible for handling login and register
+ * Class AuthController
+ * @package app\core
+ */
 class AuthController extends Controller
 
 {
+    /**
+     * @var Validation
+     */
     public Validation $vld;
+    /**
+     * @var AuthModel
+     */
     protected AuthModel $authModel;
 
+    /**
+     * AuthController constructor.
+     */
     public function __construct()
     {
         $this->vld = new Validation;
@@ -21,6 +34,11 @@ class AuthController extends Controller
     }
 
 
+    /**
+     * This is get and post methods for register
+     * @param Request $request
+     * @return string|string[]
+     */
     public function register(Request $request)
     {
         if ($request->isGet()) :
@@ -43,7 +61,7 @@ class AuthController extends Controller
                     'confirmPasswordErr' => '',
                 ],
             ];
-//            var_dump($data);
+
             return $this->render('register', $data);
         endif;
 
@@ -52,8 +70,7 @@ class AuthController extends Controller
 
             $data['errors']['nameErr'] = $this->vld->validateName($data['name']);
             $data['errors']['lastnameErr'] = $this->vld->validateLastname($data['lastname']);
-            $data['errors']['emailErr'] = $this->vld->validateEmail($data['email']);
-//            $data['errors']['emailErr'] = $this->vld->validateEmail($data['email']);
+            $data['errors']['emailErr'] = $this->vld->validateEmail($data['email'], $this->authModel);
             $data['errors']['passwordErr'] = $this->vld->validatePassword($data['password'], 6, 10);
             $data['errors']['confirmPasswordErr'] = $this->vld->confirmPassword($data['confirmPassword']);
 
@@ -64,20 +81,16 @@ class AuthController extends Controller
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
                 if ($this->authModel->registerToDb($data)) {
-                    print "NUEJO I DB";
-//                    $request->redirect('/login');
+                    $request->redirect('/login');
                 } else {
                     die('Something went wrong in adding user to db');
                 }
 
             endif;
 
-            var_dump($data);
             return $this->render('register', $data);
         endif;
-
     }
-
 
 
 //    --------------------------------------------------------------------
@@ -89,7 +102,6 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        // have ability to change laout
         if ($request->isGet()) :
             $data = [
                 'email' => '',
@@ -113,8 +125,7 @@ class AuthController extends Controller
 
             // if there are no errors
             if ($this->vld->ifEmptyArr($data['errors'])) {
-                // no errors
-                // email was found and password was entered
+
                 $loggedInUser = $this->authModel->loginToDb($data['email'], $data['password']);
 
 

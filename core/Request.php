@@ -3,13 +3,18 @@
 
 namespace app\core;
 
-//KA NORIM UZKRAUT - KO PRASE VARTOTOJAS
+
+/**
+ * Class Request looks for whar user requested
+ * @package app\core
+ */
 class Request
 {
+    /**
+     * @return string
+     */
     public function getPath(): string
     {
-        //jei sita reiksme $_SERVER['REQUEST_URI'] nenusetinta - duodam '/'
-        // '/php/32_eshop_toLaraStyle/'
         $path = $_SERVER['REQUEST_URI'] ?? '/';
         $questionMarkPosition = strpos($path, '?');
 
@@ -17,12 +22,9 @@ class Request
             $path = substr($path, 0, $questionMarkPosition);
         endif;
 
-        //kad gale butu galima ivesti slash
         if (strlen($path) > 1) :
             $path = rtrim($path, '/');
         endif;
-
-//        var_dump($questionMarkPosition);
 
         return $path;
     }
@@ -38,6 +40,10 @@ class Request
 
 
 //------------------------------------------------------------------
+
+    /**
+     * @return bool
+     */
     public function isGet(): bool
     {
         return $this->method() === 'get';
@@ -53,13 +59,15 @@ class Request
     }
 //---------------------------------------------------------------------
 
-//ISVALOMAS BODY POST METU
+
+    /**
+     * Body is cleaned when method is post and get
+     * @return array
+     */
     public function getBody()
     {
-        //store clean values
         $body = [];
 
-        //what type of request
         if ($this->isPost()) :
             foreach ($_POST as $key => $value) :
                 $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_FULL_SPECIAL_CHARS); //isvalom paduota reiksme

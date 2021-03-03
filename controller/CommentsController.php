@@ -6,27 +6,42 @@ namespace app\controller;
 use app\core\Controller;
 use app\core\Request;
 use app\model\CommentModel;
-//use app\core\Validation;
 
 
+/**
+ * Class CommentsController
+ * @package app\controller
+ */
 class CommentsController extends Controller
 
 {
+    /**
+     * @var CommentModel
+     */
     protected CommentModel $commentModel;
-//    public Validation $vld;
 
+    /**
+     * CommentsController constructor.
+     */
     public function __construct()
     {
         $this->commentModel = new CommentModel();
-//        $this->vld = new Validation();
     }
 
+    /**
+     * This handles index page get request
+     * @return string|string[]
+     */
     public function index()
     {
         return $this->render('index');
     }
 
-
+    /**
+     * This controls feedback get request
+     * @param Request $request
+     * @return string|string[]
+     */
     public function feedback(Request $request)
     {
 
@@ -40,7 +55,6 @@ class CommentsController extends Controller
                     'commentErr' => '',
                 ],
             ];
-//        var_dump($data);
             return $this->render('feedback', $data);
         endif;
 

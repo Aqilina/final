@@ -16,16 +16,25 @@ class Router
      * @var array
      */
     protected array $routes = [];
+    /**
+     * @var Request
+     */
     public Request $request;
+    /**
+     * @var Response
+     */
     public Response $response;
 
+    /**
+     * Router constructor.
+     * @param Request $request
+     * @param Response $response
+     */
     public function __construct(Request $request, Response $response)
     {
         $this->request = $request;
         $this->response = $response;
     }
-
-    //GET kelio atvaizdavimas
 
     /**
      * Adds get route and callback fn to routes array
@@ -38,32 +47,25 @@ class Router
         $this->routes['get'][$path] = $callback;
     }
 
+    /**
+     * @param $path
+     * @param $callback
+     */
     public function post($path, $callback)
     {
         $this->routes['post'][$path] = $callback;
     }
 
+    /**
+     * @return false|mixed|string|string[]
+     */
     public function resolve()
     {
-        //GAUNAMAS KELIAS PO "LOCALHOST"
         $path = $this->request->getPath();
         $method = $this->request->method();
 
         $callback = $this->routes[$method][$path] ?? false; // jei bandys ivykdyti kelia, kurio nera
 
-
-
-//        var_dump('PATH:');
-//        var_dump($path);
-//        var_dump('METHOD:');
-//        var_dump($method);
-//
-//        var_dump('CALLBACK:');
-//        var_dump($callback);
-//        var_dump('ROUTES[]:');
-//        var_dump($this->routes);
-
-        //IF THERE ARE NO SUCH ROUTE ADDED
         if ($callback === false) :
             $this->response->setResponseCode(404);
             return $this->renderView('_404');
@@ -74,7 +76,6 @@ class Router
         endif;
 
         if (is_array($callback)) :
-            //$callback yra array - jis ateina is index.php - ten paduodamas masyvas
             $instance = new $callback[0];
             Application::$app->controller = $instance;
             $callback[0] = Application::$app->controller;
@@ -83,6 +84,11 @@ class Router
         return call_user_func($callback, $this->request);
     }
 
+    /**
+     * @param string $view
+     * @param array $params
+     * @return false|string|string[]
+     */
     public function renderView(string $view, array $params = [])
     {
         //universalus budas kaip nurodyti kelia iki direktorijos (kaip anksciau config faile APPROOT)
@@ -93,13 +99,26 @@ class Router
     }
 
 
+    /**
+     * @return false|string
+     */
     protected function layoutContent()
     {
-        ob_start(); //paima i atminti stringo pavidalu
-            include_once Application::$ROOT_DIR . "/view/layout/main.php";
-        return ob_get_clean(); // grazina i iskvietimo vieta viska stringo pavidalu
+        if (isset(Application::$app->controller)) :
+            $layout = Application::$app->controller->layout;
+        else :
+            $layout = 'pageNotFound';
+        endif;
+        ob_start();
+            include_once Application::$ROOT_DIR . "/view/layout/$layout.php";
+        return ob_get_clean();
     }
 
+    /**
+     * @param $view
+     * @param $params
+     * @return false|string
+     */
     protected function pageContent($view, $params) {
         foreach ($params as $key => $param) :
             $$key = $param;
@@ -109,6 +128,4 @@ class Router
         include_once Application::$ROOT_DIR . "/view/$view.php";
         return ob_get_clean();
     }
-
-
 }
