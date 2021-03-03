@@ -8,48 +8,27 @@ nav {
     width: inherit;
 }
 
-a .nav-link {
-    text-decoration: none !important;
+.nav-container {
+    justify-content: space-around;
+    padding: 0 20px !important;
+}
+
+div .no-decor a {
+    color: black
 }
 
 header {
-    /*background-color: red;*/
     height: 70px;
-    /*width: inherit;*/
 }
 
-.main-image {
-    background-image: url('/assets/main_gym.jpg');
-    background-position: -50px 0px;
-    background-size: cover;
-    height: 300px;
 
-}
 .serviceContainer {
     height: 400px;
-    /*background-color: red;*/
     margin: 20px 0;
-}
 
-.serviceBlock {
-    width: inherit;
-    background-color: cornflowerblue;
 }
-
-.service {
-    /*background-color: yellow;*/
-    border: 1px solid grey;
-    /*border-radius: 5px;*/
-    width: 25%;
-    height: 80%;
-}
-
 main {
     width: inherit;
-}
-
-.service-photo {
-    height: 40%;
 }
 
 .service-title {
@@ -61,14 +40,15 @@ main {
     font-size: 12px;
 }
 
-.map {
+#map {
     height: 300px;
-    background-color:green;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 footer {
     height: 70px;
-    background-color: #bba8e9;
+    background-color: #d2a797;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -81,5 +61,95 @@ footer {
 
 .comments-container {
     width: 70%;
+}
+
+.font-italic {
+
+}
+
+/*--------------------------------------------------------------------------*/
+.main-image {
+    background-image: url('/assets/main_gym.jpg');
+    background-position: -5px -55px;
+    background-size: cover;
+    height: 300px;
+}
+
+.service {
+    border: 1px solid grey;
+    width: 25%;
+    height: 80%;
+    position: relative;
+}
+
+.service-photo img{
+    object-fit: cover;
+    height: 40%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.photo2 {
+   object-position: -150px 0;
+}
+
+.text-area {
+    position: absolute;
+    top: 140px;
+}
+
+/*--------------------------------------------------------------*/
+@media screen and (max-width: 700px) {
+    .text-area {
+        top: 130px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .main-image {
+        height: 150px;
+        background-position: 0px -25px;
+        margin-bottom: 40px;
+    }
+
+    .service {
+        height: 250px;
+        width: 100%;
+        border: none;
+    }
+
+    .service-photo img {
+        height: 50%;
+    }
+
+    .serviceContainer {
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+
+    h5 {
+        font-size: 20px;
+    }
+
+    #map {
+        position: fixed;
+        top: 320px;
+    }
+
+    .service-title {
+        margin: 5px 0;
+    }
+
+    .nav-block {
+        padding: 0;
+    }
+
+    .nav-container {
+        justify-content: center !important;
+    }
+
 }
 

@@ -55,6 +55,7 @@ class Validation
     {
         if (empty($field)) return "Please enter your Name";
         if (!preg_match("/^[a-z ,.'-]+$/i", $field)) return "Name must only contain latin characters";
+        if (strlen($field) > 40) return "Your name cannot exceed 40 characters";
         return '';
     }
 
@@ -66,6 +67,7 @@ class Validation
     {
         if (empty($field)) return "Please enter your Lastname";
         if (!preg_match("/^[a-z ,.'-]+$/i", $field)) return "Lastname must only contain latin characters";
+        if (strlen($field) > 40) return "Your lastname cannot exceed 40 characters";
         return '';
     }
 

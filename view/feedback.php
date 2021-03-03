@@ -1,4 +1,3 @@
-<?php var_dump($comments[0]->name) ?>
 
 <header class="text-center m-4">
 
@@ -9,7 +8,7 @@
 <!------------------------------------------------------------------------------------------>
 <div class="feedback-container">
     <div class="comments-container my-4">
-        <div class="text-start mb-2">What our clients say about us:</div>
+        <div class="text-start mb-2 fst-italic fw-bold ms-2">What our clients say about us:</div>
 <!------------------------------------------------------------------------>
 
         <!--      COMMENTS AREA when NOT logged in-->

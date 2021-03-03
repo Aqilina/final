@@ -18,20 +18,20 @@
 <div class="container">
 
     <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
+        <div class="container-fluid d-flex nav-container">
 
-            <div class="d-flex ps-3 no-decor">
+            <div class="d-flex no-decor nav-block">
                 <a class="nav-link" href="/">Home</a>
                 <a class="nav-link" href="/feedback">About us</a>
             </div>
 
             <?php if(!\app\core\Session::isUserLoggedIn()) : ?>
-            <div class="d-flex pe-5 no-decor">
+            <div class="d-flex no-decor nav-block">
                 <a class="nav-link" href="/login">Login</a>
                 <a class="nav-link" href="/register">Register</a>
             </div>
             <?php else : ?>
-            <div class="d-flex pe-5 no-decor">
+            <div class="d-flex pe-5 no-decor nav-block">
                 <a class="nav-link" href="/logout">Logout</a>
             </div>
             <?php endif; ?>
